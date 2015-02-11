@@ -146,10 +146,17 @@ void Tir::afficheTir(RenderWindow window)
     }
 }
 
-bool Tir::collisionEnnemi(Texture ennemi, const Vector2f posEnnemi) const
+bool Tir::collisionEnnemi(Texture ennemi, const Vector2f posEnnemi)
 {
-    return (((posEnnemi.x < (m_tir.getPosition().x + m_texture.getSize().x)) && ((posEnnemi.x + ennemi.getSize().x) > m_tir.getPosition().x)) &&
-            ((posEnnemi.y < (m_tir.getPosition().y + m_texture.getSize().y)) && ((posEnnemi.y + ennemi.getSize().y) > m_tir.getPosition().y)));
+    bool toucher = (((posEnnemi.x < (m_tir.getPosition().x + m_texture.getSize().x)) && ((posEnnemi.x + ennemi.getSize().x) > m_tir.getPosition().x)) &&
+                    ((posEnnemi.y < (m_tir.getPosition().y + m_texture.getSize().y)) && ((posEnnemi.y + ennemi.getSize().y) > m_tir.getPosition().y)));
+
+    if(toucher)
+    {
+        m_tirer = false;
+    }
+
+    return toucher;
 }
 
 void Tir::verifDepassementEcran()
