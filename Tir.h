@@ -23,7 +23,7 @@ class Tir
         void creationTir(Texture texture_Tour, const Vector2f posTour, const Vector2f posEnnemi, int vitesse) throw(string);
         void deplacementTir();
         void afficheTir(RenderWindow window);
-        bool collisionEnnemi(Texture ennemi, const Vector2f posEnnemi) const;
+        bool collisionEnnemi(Texture ennemi, const Vector2f posEnnemi);
         void verifDepassementEcran();
         Sprite getSprite() const {return m_tir;}
         bool getTirer() const {return m_tirer;}
