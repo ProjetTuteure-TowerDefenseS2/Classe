@@ -18,7 +18,7 @@ Tir::~Tir()
     //dtor
 }
 
-void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector2f posEnnemi, int vitesse) throw(string)
+void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector2f posEnnemi, int vitesse, int zone) throw(string)
 {
     if(posTour.x < MIN_LARGEUR){throw(string("Tir.cpp : Position X de la tour < minimum"));}
     if(posTour.x > LARGEUR){throw(string("Tir.cpp : Position X de la tour > maximum"));}
@@ -34,6 +34,8 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
 
     if(vitesse < 1 || vitesse > 3){throw (string("Tir.cpp : Vitesse non correct"));}
 
+    if(zone < 1 || zone > 4){throw (string("Tir.cpp : Vitesse non correct"));}
+
     if(m_tirer){throw(string("Tir.cpp : Tir deja tire"));}
 
 
@@ -43,14 +45,19 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
     {
     case 1:
         m_vitesse = 0.005;
+        m_tempsZone = 0.39;
         break;
     case 2:
         m_vitesse = 0.003;
+        m_tempsZone = 0.3;
         break;
     case 3:
         m_vitesse = 0.001;
+        m_tempsZone = 0.115;
         break;
     }
+
+    m_tempsZone *= zone;
 
     int posX = posTour.x + (texture_Tour.getSize().x / 2);
     int posY = posTour.y + (texture_Tour.getSize().y / 2);
@@ -67,7 +74,7 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
         }
         else if(valX < 0)
         {
-            valY /= -valX;
+            valY /= -valX;///A verifier
             valX /= -valX;
         }
     }
@@ -96,8 +103,7 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
 
         if(valY < 0)
         {
-            m_valeurRotation = (m_valeurRotation * (360 / (2*M_PI))) + 90;
-            m_valeurRotation = -m_valeurRotation;
+            m_valeurRotation = -((m_valeurRotation * (360 / (2*M_PI))) + 90);
         }
         else
         {
@@ -121,19 +127,23 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
         }
         m_valeurDeplacement_X = valX;
         m_valeurDeplacement_Y = valY;
+        m_clock.restart();
+        m_clockZone.restart();
     }
-    m_clock.restart();
 }
 
 void Tir::deplacementTir()
 {
     if(m_tirer)
     {
-        m_temps = m_clock.getElapsedTime();
-        if(m_temps.asSeconds() >= m_vitesse)
+        if(m_clock.getElapsedTime().asSeconds() >= m_vitesse)
         {
             m_tir.move(m_valeurDeplacement_X, m_valeurDeplacement_Y);
             m_clock.restart();
+        }
+        if(m_clockZone.getElapsedTime().asSeconds() >= m_tempsZone)
+        {
+            m_tirer = false;
         }
     }
 }
@@ -166,5 +176,4 @@ void Tir::verifDepassementEcran()
         m_tirer = false;
     }
 }
-
 
