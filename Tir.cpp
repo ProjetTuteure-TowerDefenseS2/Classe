@@ -57,7 +57,15 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
         break;
     }
 
-    m_tempsZone *= zone;
+    if(zone != 4)
+    {
+        m_tempsZone *= zone;
+    }
+    else
+    {
+        m_tempsZone = 50;
+    }
+
 
     int posX = posTour.x + (texture_Tour.getSize().x / 2);
     int posY = posTour.y + (texture_Tour.getSize().y / 2);
@@ -132,48 +140,41 @@ void Tir::creationTir(Texture texture_Tour, const Vector2f posTour, const Vector
     }
 }
 
-void Tir::deplacementTir()
+bool Tir::deplacementTir(Texture ennemi, const Vector2f posEnnemi)
 {
+    bool toucher = false;
+
     if(m_tirer)
     {
         if(m_clock.getElapsedTime().asSeconds() >= m_vitesse)
         {
             m_tir.move(m_valeurDeplacement_X, m_valeurDeplacement_Y);
             m_clock.restart();
+            if(m_tir.getPosition().x > LARGEUR || m_tir.getPosition().x < MIN_LARGEUR || m_tir.getPosition().y < MIN_HAUTEUR || m_tir.getPosition().y > HAUTEUR)
+            {
+                m_tirer = false;
+            }
+            toucher = (((posEnnemi.x < (m_tir.getPosition().x + m_texture.getSize().x)) && ((posEnnemi.x + ennemi.getSize().x) > m_tir.getPosition().x)) &&
+                    ((posEnnemi.y < (m_tir.getPosition().y + m_texture.getSize().y)) && ((posEnnemi.y + ennemi.getSize().y) > m_tir.getPosition().y)));
+
+            if(toucher)
+            {
+                m_tirer = false;
+            }
         }
         if(m_clockZone.getElapsedTime().asSeconds() >= m_tempsZone)
         {
             m_tirer = false;
         }
     }
+
+    return toucher;
 }
 
-void Tir::afficheTir(RenderWindow window)
+void Tir::afficheTir(RenderWindow & window ) const
 {
     if(m_tirer)
     {
         window.draw(m_tir);
     }
 }
-
-bool Tir::collisionEnnemi(Texture ennemi, const Vector2f posEnnemi)
-{
-    bool toucher = (((posEnnemi.x < (m_tir.getPosition().x + m_texture.getSize().x)) && ((posEnnemi.x + ennemi.getSize().x) > m_tir.getPosition().x)) &&
-                    ((posEnnemi.y < (m_tir.getPosition().y + m_texture.getSize().y)) && ((posEnnemi.y + ennemi.getSize().y) > m_tir.getPosition().y)));
-
-    if(toucher)
-    {
-        m_tirer = false;
-    }
-
-    return toucher;
-}
-
-void Tir::verifDepassementEcran()
-{
-    if(m_tir.getPosition().x > LARGEUR || m_tir.getPosition().x < MIN_LARGEUR || m_tir.getPosition().y < MIN_HAUTEUR || m_tir.getPosition().y > HAUTEUR)
-    {
-        m_tirer = false;
-    }
-}
-
