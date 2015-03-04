@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <SFML/Graphics.hpp>
-
+// #Martin# OMG jamais de using namespace dans un .h
 using namespace sf;
 using namespace std;
 
