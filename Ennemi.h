@@ -35,6 +35,7 @@ public :
     bool getVivant(){return m_vivant;}
 
 private :
+    // #Martin# évite de commencer par un _
     std::string _nomEnnemi;
     int _ptsVieMax = 10;
     int _ptsVieActuel;

@@ -4,12 +4,14 @@
 
 	Tour::Tour()
 	{
+	    // #Martin# ??????
 		float posX;
 		float posY;
 
 		m_afficher = false;
 	}
 
+// #Martin# plutot "initialiserTour" non ?
 	void Tour::creerTour(string nomTexture, string nomTexture_2, string nomTexture_3, string nomTexture_4, string nomTexture_5)
 	{
 	    m_Tir.creerTir(nomTexture, nomTexture_2, nomTexture_3, nomTexture_4, nomTexture_5);

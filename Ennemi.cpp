@@ -1,5 +1,10 @@
 #include "ennemis.h"
 
+// ###############################################################
+// remarque générale : Vérifie tes param : doivent-ils etre const? doivent-ils etre en ref  ?
+
+
+// #Martin# OMG une variable d'une lettre
 float length(sf::Vector2f v)
 {
     return sqrt(v.x * v.x + v.y * v.y);
@@ -10,7 +15,7 @@ Ennemi::Ennemi()
 
 }
 
-
+// #Martin# OMG "str" le nom le plus parlant au monde
 Ennemi::Ennemi(std::string str, sf::Sprite sp, float valVitesse)
 {
 
@@ -63,6 +68,8 @@ void Ennemi::deplacement(sf::Clock & clock)
 {
     if (m_moving && m_vivant)
     {
+        // #Martin# Es tu vraiment sur de ça ? tu passes le clock en reference, que ce passe t'il si tu gere plusieurs monstre ?
+        // je dis pas que c'est faux, je dis que c'est suspect
         sf::Time elapsed = clock.restart();
         _sprite.move(m_velocity * elapsed.asSeconds());
 

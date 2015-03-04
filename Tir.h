@@ -5,9 +5,11 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
+// #Martin# OMG jamais de using namespace dans un .h
 using namespace sf;
 using namespace std;
 
+// #Martin# hauteur et largeur de quoi ? en quelle unitée ?
 const int HAUTEUR = 800;
 const int LARGEUR = 1300;
 
